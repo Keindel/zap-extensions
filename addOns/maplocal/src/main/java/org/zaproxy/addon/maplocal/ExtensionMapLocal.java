@@ -74,7 +74,6 @@ public class ExtensionMapLocal extends ExtensionAdaptor implements SessionChange
     private static final String EXAMPLE_FILE = "example/ExampleFile.txt";
 
     private ZapMenuItem menuExample;
-    private RightClickMsgMenu popupMsgMenuExample;
     private MapLocalStatusPanel mapLocalPanel;
 
     private MapLocalAPI api;
@@ -153,7 +152,7 @@ public class ExtensionMapLocal extends ExtensionAdaptor implements SessionChange
             mapLocalPanel = new MapLocalStatusPanel(this);
             mapLocalPanel.setLayout(new CardLayout());
             mapLocalPanel.setName(Constant.messages.getString(PREFIX + ".panel.title"));
-            mapLocalPanel.setIcon(new ImageIcon(getClass().getResource(RESOURCES + "/cake.png")));
+            mapLocalPanel.setIcon(new ImageIcon(getClass().getResource(RESOURCES + "/maplocal.png")));
         }
         return mapLocalPanel;
     }
@@ -202,15 +201,6 @@ public class ExtensionMapLocal extends ExtensionAdaptor implements SessionChange
             // Something unexpected went wrong, write the error to the log
             LOGGER.error(e.getMessage(), e);
         }
-    }
-
-    private RightClickMsgMenu getPopupMsgMenuExample() {
-        if (popupMsgMenuExample == null) {
-            popupMsgMenuExample =
-                    new RightClickMsgMenu(
-                            this, Constant.messages.getString(PREFIX + ".popup.title"));
-        }
-        return popupMsgMenuExample;
     }
 
     @Override

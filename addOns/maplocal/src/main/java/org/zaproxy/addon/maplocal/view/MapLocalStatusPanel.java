@@ -74,7 +74,7 @@ public class MapLocalStatusPanel extends AbstractPanel {
         this.setIcon(
                 new ImageIcon(
                         MapLocalStatusPanel.class.getResource(
-                                "/org/zaproxy/addon/maplocal/resources/cake.png")));
+                                "/org/zaproxy/addon/maplocal/resources/maplocal.png")));
         this.add(getPanelCommand(), getPanelCommand().getName());
     }
 

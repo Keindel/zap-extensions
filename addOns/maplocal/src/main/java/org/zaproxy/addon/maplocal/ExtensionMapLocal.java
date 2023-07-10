@@ -19,6 +19,13 @@
  */
 package org.zaproxy.addon.maplocal;
 
+import java.awt.CardLayout;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.ImageIcon;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.parosproxy.paros.Constant;
@@ -44,20 +51,11 @@ import org.zaproxy.addon.maplocal.view.popup.PopupMenuRemoveMapLocal;
 import org.zaproxy.zap.extension.httppanel.Message;
 import org.zaproxy.zap.view.ZapMenuItem;
 
-import javax.swing.ImageIcon;
-import java.awt.CardLayout;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * An extension that adds Map Local feature. It allows user to map response bodies for chosen urls
  * to local files.
  */
-public class ExtensionMapLocal extends ExtensionAdaptor
-        implements SessionChangedListener {
+public class ExtensionMapLocal extends ExtensionAdaptor implements SessionChangedListener {
 
     // The name is public so that other extensions can access it
     public static final String NAME = "ExtensionMapLocal";
@@ -112,17 +110,17 @@ public class ExtensionMapLocal extends ExtensionAdaptor
         // As long as we're not running as a daemon
         if (hasView()) {
             extensionHook.getHookMenu().addToolsMenuItem(getMenuExample());
-//            can be refactored as universal popup, if required
-//            extensionHook.getHookMenu().addPopupMenuItem(getPopupMsgMenuExample());
+            //            can be refactored as universal popup, if required
+            //            extensionHook.getHookMenu().addPopupMenuItem(getPopupMsgMenuExample());
             extensionHook.getHookMenu().addPopupMenuItem(getPopupMenuEditMapLocal());
             extensionHook.getHookMenu().addPopupMenuItem(getPopupMenuDeleteMapLocal());
             extensionHook.getHookView().addStatusPanel(getMapLocalStatusPanel());
 
-            mapLocalUiManager =
-                    new MapLocalUiManagerImpl(extensionHook.getHookMenu(), this);
+            mapLocalUiManager = new MapLocalUiManagerImpl(extensionHook.getHookMenu(), this);
             setMapLocalUiManager(mapLocalUiManager);
 
-            mapLocalMessageHandler.setEnabledMapLocals(getMapLocalTableModel().getMapLocalsEnabledList());
+            mapLocalMessageHandler.setEnabledMapLocals(
+                    getMapLocalTableModel().getMapLocalsEnabledList());
         } else {
             mapLocalMessageHandler.setEnabledMapLocals(new ArrayList<>());
         }
@@ -262,11 +260,12 @@ public class ExtensionMapLocal extends ExtensionAdaptor
     private void writeMapLocalToDB(MapLocalTableEntry mapLocal) {
         RecordMapLocal recordMapLocal = null;
         try {
-            recordMapLocal = dbTableMapLocal.write(
-                    mapLocal.getString(),
-                    mapLocal.getMatch().toString(),
-                    mapLocal.isIgnoreCase(),
-                    mapLocal.getLocalPath().toString());
+            recordMapLocal =
+                    dbTableMapLocal.write(
+                            mapLocal.getString(),
+                            mapLocal.getMatch().toString(),
+                            mapLocal.isIgnoreCase(),
+                            mapLocal.getLocalPath().toString());
 
             int mapLocId = recordMapLocal.getMapLocalId();
             mapLocal.setMapLocalId(mapLocId);
@@ -281,7 +280,8 @@ public class ExtensionMapLocal extends ExtensionAdaptor
         updateMapLocalInDB(oldMapLocal, newMapLocal);
     }
 
-    private void updateMapLocalInDB(MapLocalTableEntry oldMapLocal, MapLocalTableEntry newMapLocal) {
+    private void updateMapLocalInDB(
+            MapLocalTableEntry oldMapLocal, MapLocalTableEntry newMapLocal) {
         try {
             dbTableMapLocal.update(
                     oldMapLocal.getMapLocalId(),
@@ -336,11 +336,12 @@ public class ExtensionMapLocal extends ExtensionAdaptor
             List<Integer> mapLocIds = dbTableMapLocal.getMapLocalList();
             for (Integer mapLocId : mapLocIds) {
                 RecordMapLocal recMapLoc = dbTableMapLocal.read(mapLocId);
-                MapLocalTableEntry mapLocal = new MapLocalTableEntry(
-                        recMapLoc.getUrlString(),
-                        MapLocalTableEntry.Match.valueOf(recMapLoc.getMatch()),
-                        recMapLoc.isIgnoreCase(),
-                        Path.of(recMapLoc.getLocalPath()));
+                MapLocalTableEntry mapLocal =
+                        new MapLocalTableEntry(
+                                recMapLoc.getUrlString(),
+                                MapLocalTableEntry.Match.valueOf(recMapLoc.getMatch()),
+                                recMapLoc.isIgnoreCase(),
+                                Path.of(recMapLoc.getLocalPath()));
                 mapLocal.setMapLocalId(mapLocId);
                 this.getMapLocalStatusPanel().addMapLocal(mapLocal);
             }

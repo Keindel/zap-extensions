@@ -1,17 +1,24 @@
+/*
+ * Zed Attack Proxy (ZAP) and its related class files.
+ *
+ * ZAP is an HTTP/HTTPS proxy for assessing web application security.
+ *
+ * Copyright 2023 The ZAP Development Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.zaproxy.addon.maplocal.view;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jdesktop.swingx.JXTable;
-import org.parosproxy.paros.Constant;
-import org.parosproxy.paros.extension.AbstractPanel;
-import org.parosproxy.paros.view.View;
-import org.zaproxy.addon.maplocal.ExtensionMapLocal;
-
-import javax.swing.ImageIcon;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
-import javax.swing.table.TableColumn;
 import java.awt.CardLayout;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
@@ -19,6 +26,17 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
+import javax.swing.ImageIcon;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+import javax.swing.table.TableColumn;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jdesktop.swingx.JXTable;
+import org.parosproxy.paros.Constant;
+import org.parosproxy.paros.extension.AbstractPanel;
+import org.parosproxy.paros.view.View;
+import org.zaproxy.addon.maplocal.ExtensionMapLocal;
 
 @SuppressWarnings("serial")
 public class MapLocalStatusPanel extends AbstractPanel {
@@ -122,7 +140,8 @@ public class MapLocalStatusPanel extends AbstractPanel {
             mapLocalTable
                     .getColumnModel()
                     .getColumn(0)
-                    .addPropertyChangeListener(new MapLocalStatusPanel.ColumnResizedListener(MAP_LOCAL_TABLE));
+                    .addPropertyChangeListener(
+                            new MapLocalStatusPanel.ColumnResizedListener(MAP_LOCAL_TABLE));
             mapLocalTable.getColumnModel().getColumn(0).setMaxWidth(250);
 
             mapLocalTable.getTableHeader().setReorderingAllowed(false);
@@ -150,8 +169,8 @@ public class MapLocalStatusPanel extends AbstractPanel {
                                 int row = mapLocalTable.rowAtPoint(e.getPoint());
                                 if (row < 0
                                         || !mapLocalTable
-                                        .getSelectionModel()
-                                        .isSelectedIndex(row)) {
+                                                .getSelectionModel()
+                                                .isSelectedIndex(row)) {
                                     mapLocalTable.getSelectionModel().clearSelection();
                                     if (row >= 0) {
                                         mapLocalTable
@@ -215,15 +234,13 @@ public class MapLocalStatusPanel extends AbstractPanel {
         }
     }
 
-    private void editMapLocalModel(
-            MapLocalTableEntry oldMapLocal, MapLocalTableEntry newMapLocal) {
+    private void editMapLocalModel(MapLocalTableEntry oldMapLocal, MapLocalTableEntry newMapLocal) {
         model.editMapLocal(oldMapLocal, newMapLocal);
         selectRowAndEnsureVisible(model.getLastAffectedRow());
     }
 
     public void editMapLocal(
-            final MapLocalTableEntry oldMapLocal,
-            final MapLocalTableEntry newMapLocal) {
+            final MapLocalTableEntry oldMapLocal, final MapLocalTableEntry newMapLocal) {
         if (EventQueue.isDispatchThread()) {
             editMapLocalModel(oldMapLocal, newMapLocal);
             return;

@@ -1,12 +1,24 @@
+/*
+ * Zed Attack Proxy (ZAP) and its related class files.
+ *
+ * ZAP is an HTTP/HTTPS proxy for assessing web application security.
+ *
+ * Copyright 2023 The ZAP Development Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.zaproxy.addon.maplocal.view;
 
-import org.parosproxy.paros.Constant;
-import org.zaproxy.addon.maplocal.view.MapLocalTableEntry.Match;
-import org.zaproxy.zap.view.LayoutHelper;
-import org.zaproxy.zap.view.StandardFieldsDialog;
-
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.nio.file.Files;
@@ -16,6 +28,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import org.parosproxy.paros.Constant;
+import org.zaproxy.addon.maplocal.view.MapLocalTableEntry.Match;
+import org.zaproxy.zap.view.LayoutHelper;
+import org.zaproxy.zap.view.StandardFieldsDialog;
 
 @SuppressWarnings("serial")
 public class MapLocalAddEditDialog extends StandardFieldsDialog {
@@ -115,10 +133,11 @@ public class MapLocalAddEditDialog extends StandardFieldsDialog {
     }
 
     private String getUrlStrFromFields() {
-        StringBuilder sbFromFields = new StringBuilder(this.getStringValue(FIELD_PROTOCOL))
-                .append("://")
-                .append(this.getStringValue(FIELD_HOST))
-                .append(this.getStringValue(FIELD_PATH));
+        StringBuilder sbFromFields =
+                new StringBuilder(this.getStringValue(FIELD_PROTOCOL))
+                        .append("://")
+                        .append(this.getStringValue(FIELD_HOST))
+                        .append(this.getStringValue(FIELD_PATH));
         String query = this.getStringValue(FIELD_QUERY);
         if (!query.isBlank()) {
             sbFromFields.append("?").append(query);
@@ -136,7 +155,8 @@ public class MapLocalAddEditDialog extends StandardFieldsDialog {
         }
 
         String urlString = getUrlStrFromFields();
-        if (MapLocalTableEntry.Match.regex.equals(this.strToMatch(this.getStringValue(FIELD_MATCH)))) {
+        if (MapLocalTableEntry.Match.regex.equals(
+                this.strToMatch(this.getStringValue(FIELD_MATCH)))) {
             try {
                 Pattern.compile(urlString);
             } catch (Exception e) {
@@ -144,7 +164,8 @@ public class MapLocalAddEditDialog extends StandardFieldsDialog {
             }
         }
         if (urlString.contains("#")
-                && MapLocalTableEntry.Match.contains.equals(this.strToMatch(this.getStringValue(FIELD_MATCH)))) {
+                && MapLocalTableEntry.Match.contains.equals(
+                        this.strToMatch(this.getStringValue(FIELD_MATCH)))) {
             return Constant.messages.getString("mapLocal.warn.urlfragment");
         }
 
@@ -178,7 +199,7 @@ public class MapLocalAddEditDialog extends StandardFieldsDialog {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("choose file");
         int result = fileChooser.showOpenDialog(MapLocalAddEditDialog.this);
-        if (result == JFileChooser.APPROVE_OPTION ) {
+        if (result == JFileChooser.APPROVE_OPTION) {
             this.setFieldValue(FIELD_LOCAL_PATH, fileChooser.getSelectedFile().getPath());
         }
     }

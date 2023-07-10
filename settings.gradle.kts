@@ -70,6 +70,7 @@ var addOns = listOf(
     "jsonview",
     "jython",
     "kotlin",
+    "maplocal",
     "network",
     "oast",
     "onlineMenu",

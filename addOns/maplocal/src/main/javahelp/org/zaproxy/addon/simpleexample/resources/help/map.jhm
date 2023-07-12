@@ -4,7 +4,7 @@
          "http://java.sun.com/products/javahelp/map_1_0.dtd">
 
 <map version="1.0">
-	<mapID target="simple-icon" url="contents/images/cake.png" />
-    <mapID target="simple" url="contents/simple.html" />
-    <mapID target="simple.about" url="contents/about.html" />
+	<mapID target="maplocal-icon" url="contents/images/maplocal.png" />
+    <mapID target="maplocal" url="contents/maplocal.html" />
+    <mapID target="maplocal.about" url="contents/about.html" />
 </map>
